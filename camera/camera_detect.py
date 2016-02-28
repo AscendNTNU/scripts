@@ -15,10 +15,9 @@ def main():
 		file = open(filename,'w')
 		if len(glob.glob(CAMERA_PATH)) > 0:
 			connected = glob.glob(V4L_PATH)
-			if len(connected) > 0:
-				print "Some cameras are already connected. These will be ignored:"
-				for camera in connected:
-					print camera
+			print "Some cameras are already connected. These will be ignored:"
+			for camera in connected:
+				print camera
 
 		for direction in DIRECTIONS:
 			print "\nPlease connect", direction, "camera"
@@ -26,7 +25,7 @@ def main():
 				time.sleep(0.1)
 			device_list = glob.glob(V4L_PATH)
 			if len(device_list) == ( len(connected) + 1 ):
-				# Get type and serial number of the camera, create symlink in file
+				# Get type and serial number of the camera, create symlink in rules file
 				for device in device_list:
 					if device not in connected:
 						print "New device on", device
@@ -48,7 +47,7 @@ def main():
 		print "\nRules file\033[94m",filename,"\033[0mcreated. Moving to protected path\033[94m",final_dest,"\033[0m"
 		proc = subprocess.Popen(["sudo","mv",filename,final_dest])
 		proc.wait()
-		
+		return 0
 		
 	else:
 		print "Program aborted."
