@@ -7,7 +7,7 @@ def main():
 	filename = "/tmp/cameras.rules"
 	final_dest = "/etc/udev/rules.d/cameras.rules"
 	connected = []
-	DIRECTIONS = ["front"]#, "left", "right", "back", "fisheye"]
+	DIRECTIONS = ["front", "left", "right"]#, "back", "fisheye"]
 
 	print "WARNING: This program will overwrite any existing file",final_dest
 	run = raw_input('Do you want to continue?[Y/N]: ')
