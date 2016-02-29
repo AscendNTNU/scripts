@@ -5,11 +5,11 @@ LEFT_PORT=12001
 BACK_PORT=12002
 RIGHT_PORT=12003
 FISHEYE_PORT=12004
-RECEIVER_IP=192.168.1.151
+RECEIVER_IP="192.168.1.${1:-151}"
 
 cameras=(/dev/videoFront /dev/videoLeft /dev/videoRight /dev/videoBack /dev/videoFisheye)
 
-
+echo $RECEIVER_IP
 for entry in "/dev/"video*; do
 	if [ "$entry" = "/dev/videoFront" ]; then
 		echo "Starting stream from $entry"
