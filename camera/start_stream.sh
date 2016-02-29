@@ -42,6 +42,7 @@ done
 #Warn about missing cameras
 for i in ${cameras[@]}; do
 	echo "$i not started"
-done 
+done
 
-#gst-launch-1.0 v4l2src device=DEVICE_PATH ! image/jpeg, width=1920, height=1080, framerate=30/1  ! rtpjpegpay ! udpsink host=RECEIVER_IP port=RECEIVER_PORT
+wait
+
