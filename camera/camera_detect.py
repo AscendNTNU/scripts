@@ -28,7 +28,7 @@ def main():
 	run = raw_input('Do you want to continue?[Y/N]: ')
 	if run == "Y":
 		file = open(filename,'w')
-		if len(glob.glob(CAMERA_PATH)) > 0:
+		if len(glob.glob(CAMERA_PATH)) > 0: #Cameras detected before the user is asked to connect any
 			connected = glob.glob(V4L_PATH)
 			print "Some cameras are already connected. These will be ignored:"
 			for camera in connected:
@@ -36,6 +36,8 @@ def main():
 
 		for direction in DIRECTIONS:
 			print "\nPlease connect", direction, "camera"
+			
+			#Poll until a change in number of connected cameras is detected
 			while len(glob.glob(V4L_PATH)) == len(connected):
 				time.sleep(0.1)
 			device_list = glob.glob(V4L_PATH)
@@ -55,11 +57,14 @@ def main():
 						print "Device added with symlink /dev/video"+direction.title()
 
 			else:
+				#The number of cameras either decreased or increased by more than one
 				print("ERROR: Disconnected camera or multiple new cameras connected at once. Aborting.")
 				os.remove(filename)
 			 	return 1
 		file.close()
 		print "\nRules file\033[94m",filename,"\033[0mcreated. Moving to protected path\033[94m",final_dest,"\033[0m"
+		
+		#Move the rules file to the correct location. The user may be asked for administrator credentials.
 		proc = subprocess.Popen(["sudo","mv",filename,final_dest])
 		proc.wait()
 		return 0
