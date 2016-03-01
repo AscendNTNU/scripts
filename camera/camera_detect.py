@@ -1,4 +1,19 @@
 #!/usr/bin/env python
+
+# 
+# Script for creating persistent camera symlinks for a single ELP wide angle camera
+# and a number of Logitech C920 cameras. 
+#
+# The script creates a udev rule file using name and serial attributes to create
+# symlinks such as '/dev/videoFront' for a front mounted camera regardless of
+# the port it in connected to and the order the cameras are connected to the computer.
+# The number of rules and the names of the symlinks are determined by the content of
+# the DIRECTIONS array.
+#
+# Written by: Martin Sollie (martin.sollie@ascendntnu.no)
+# For:        Ascend NTNU (ascendntnu.no)
+#
+
 import glob, os, time, subprocess
 
 def main():
