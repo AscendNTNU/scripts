@@ -1,0 +1,33 @@
+#!/bin/bash
+#The Drone Master script
+echo "Drone Master"
+
+echo "Do you want to start resource monitoring (GPU)?"
+select yn in "Yes" "No"; do
+	case $yn in
+		Yes ) x-terminal-emulator -e '/bin/bash -c "watch nvidia-smi"'; break;;
+		No ) break;;
+	esac
+done
+
+#Start ROS Core
+echo "Start ROS Core"
+x-terminal-emulator -e '/bin/bash -c "roscore"'
+sleep 2
+
+#ROS Pre Rviz
+echo "Start MAP (Pre Rviz)"
+rosrun tf static_transform_publisher 0.0 0.0 0.0 0.0 0.0 0.0 map my_frame 100 &
+sleep 1
+
+#ROS Rviz
+echo "Start Rviz"
+rosrun rviz rviz &
+
+#Show ps to indicate system status
+ps &
+sleep 3
+
+#Start Edge Detector
+x-terminal-emulator -e '/bin/bash /home/ascend/bin/edge_detector'
+
