@@ -2,17 +2,6 @@
 # The Edge Detector Node (EDN) script. Starts EDN.
 echo "Script Edge Detector Node"
 
-
-# Start the edge detector?
-echo "Do you want to start the edge detector node?"
-select answer in "yes" "no"; do
-	case $answer in
-		yes ) break;;
-		no ) exit;;
-	esac
-done
-
-
 # Use GPU?
 #echo "Do you want to use the GPU?"
 #select answer in "yes" "no"; do

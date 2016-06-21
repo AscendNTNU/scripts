@@ -28,6 +28,13 @@ rosrun rviz rviz &
 ps &
 sleep 3
 
-#Start Edge Detector
-x-terminal-emulator -e '/bin/bash /home/ascend/bin/edge_detector'
+# Start the edge detector?
+echo "Do you want to start the edge detector node?"
+select answer in "yes" "no"; do
+	case $answer in
+		yes ) x-terminal-emulator -e '/bin/bash /home/ascend/scripts/dronemaster/edge_detector'; break;;
+		no ) break;;
+	esac
+done
+
 
