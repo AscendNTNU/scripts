@@ -14,7 +14,8 @@
 # For:        Ascend NTNU (ascendntnu.no)
 #
 
-import glob, os, time, subprocess
+import glob, os, time, subprocess, sys
+from select import select
 
 def main():
 	CAMERA_PATH = "/dev/video*"
@@ -22,9 +23,10 @@ def main():
 	filename = "/tmp/cameras.rules"
 	final_dest = "/etc/udev/rules.d/cameras.rules"
 	connected = []
-	DIRECTIONS = ["front", "left", "right"]#, "back", "fisheye"]
+	DIRECTIONS = ["front", "left", "right", "back", "fisheye"]
 
 	print "WARNING: This program will overwrite any existing file",final_dest
+	print "Please disconnect all cameras."
 	run = raw_input('Do you want to continue?[Y/N]: ')
 	if run == "Y":
 		file = open(filename,'w')
@@ -35,11 +37,21 @@ def main():
 				print camera
 
 		for direction in DIRECTIONS:
-			print "\nPlease connect", direction, "camera"
+			print "\nPlease connect", direction, "camera, or press enter to skip"
 			
-			#Poll until a change in number of connected cameras is detected
+			#Poll until a change in number of connected cameras is detected, or user skips
+			time.sleep(0.1)
+			skip = False
 			while len(glob.glob(V4L_PATH)) == len(connected):
-				time.sleep(0.1)
+				rlist, _, _ = select([sys.stdin], [], [], 0.5)
+				if rlist:
+					s = sys.stdin.readline()
+					print s
+					if s == '\n':
+						skip = True
+						break
+			if skip == True:
+				continue
 			device_list = glob.glob(V4L_PATH)
 			if len(device_list) == ( len(connected) + 1 ):
 				# Get type and serial number of the camera, create symlink in rules file
