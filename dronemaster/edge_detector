@@ -2,17 +2,6 @@
 # The Edge Detector Node (EDN) script. Starts EDN.
 echo "Script Edge Detector Node"
 
-
-# Start the edge detector?
-echo "Do you want to start the edge detector node?"
-select answer in "yes" "no"; do
-	case $answer in
-		yes ) break;;
-		no ) exit;;
-	esac
-done
-
-
 # Use GPU?
 #echo "Do you want to use the GPU?"
 #select answer in "yes" "no"; do
@@ -25,12 +14,13 @@ done
 
 # Select launch file
 echo "Select launch file: "
-select filename in "video" "image" "gstreamer-lab-summer" "gstreamer-lab-roof"; do
+select filename in "video" "image" "gstreamer-lab-summer" "gstreamer-lab-roof" "gstreamer-udp-camera-front"; do
 	case $filename in
 		video ) roslaunch edge_detector_node video.launch; break;;
 		image ) roslaunch edge_detector_node image-sim-r2.launch; break;;
 		gstreamer-lab-summer ) roslaunch edge_detector_node gstreamer-lab-summer.launch; break;;
 		gstreamer-lab-roof ) roslaunch edge_detector_node gstreamer-lab-roof.launch; break;;
+		gstreamer-udp-camera-front ) roslaunch edge_detector_node gstreamer-udp-camera-front.launch; break;;
 	esac
 done
 
