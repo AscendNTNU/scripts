@@ -1,0 +1,2 @@
+#!/bin/bash
+roslaunch edge_detector_node gstreamer-front.launch
