@@ -1,0 +1,4 @@
+#!/bin/bash
+roslaunch edge_detector_node gstreamer-back.launch
+$SHELL
+sleep 5
