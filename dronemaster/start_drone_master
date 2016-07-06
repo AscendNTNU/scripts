@@ -30,19 +30,20 @@ sleep 3
 
 # Start the edge detector?
 echo "Do you want to start the edge detector node?"
-select answer in "yes" "no"; do
+select answer in "yes" "no" "single"; do
 	case $answer in
-		yes ) x-terminal-emulator -e '/bin/bash /home/ascend/scripts/dronemaster/edge_detector'; break;;
+		yes ) x-terminal-emulator -e '/bin/bash /home/ascend/scripts/dronemaster/start_edge_detector'; break;;
 		no ) break;;
+		single ) x-terminal-emulator -e '/bin/bash /home/ascend/scripts/dronemaster/edge_detector'; break;;
 	esac
 done
 
 
-# Start the edge detector?
+# Start the gstreamer-reciver?
 echo "Do you want to start the gstreamer-reciver node?"
 select answer in "yes" "no"; do
 	case $answer in
-		yes ) x-terminal-emulator -e '/bin/bash /home/ascend/scripts/dronemaster/gstreamer-reciver'; break;;
+		yes ) x-terminal-emulator -e '/bin/bash /home/ascend/scripts/dronemaster/gstreamer_reciver'; break;;
 		no ) break;;
 	esac
 done
