@@ -38,3 +38,14 @@ select answer in "yes" "no"; do
 done
 
 
+# Start the edge detector?
+echo "Do you want to start the gstreamer-reciver node?"
+select answer in "yes" "no"; do
+	case $answer in
+		yes ) x-terminal-emulator -e '/bin/bash /home/ascend/scripts/dronemaster/gstreamer-reciver'; break;;
+		no ) break;;
+	esac
+done
+
+
+
