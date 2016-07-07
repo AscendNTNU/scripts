@@ -1,0 +1,4 @@
+#!/bin/bash
+rosrun ground_bot_state_estimation ground_bot_state_estimation_node
+$SHELL
+sleep 5

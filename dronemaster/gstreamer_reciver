@@ -1,0 +1,4 @@
+#!/bin/bash
+roslaunch gstreamer_reciver gstreamer-udp-camera-front.launch
+$SHELL
+sleep 5
