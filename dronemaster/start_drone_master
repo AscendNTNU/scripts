@@ -49,4 +49,13 @@ select answer in "yes" "no"; do
 done
 
 
+# Start the ground_bot_state_estimation?
+echo "Do you want to start the ground bot state estimation node?"
+select answer in "yes" "no"; do
+	case $answer in
+		yes ) x-terminal-emulator -e '/bin/bash /home/ascend/scripts/dronemaster/ground_bot_state_estimation'; break;;
+		no ) break;;
+	esac
+done
+
 
