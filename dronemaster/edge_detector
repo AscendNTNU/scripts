@@ -5,7 +5,7 @@ echo "Script Edge Detector Node"
 
 # Select launch file
 echo "Select launch file: "
-select filename in "video" "image" "gstreamer-lab-summer" "gstreamer-lab-roof" "gstreamer-udp-camera-front" "lab"; do
+select filename in "video" "image" "gstreamer-lab-summer" "gstreamer-lab-roof" "gstreamer-udp-camera-front" "lab" "lab-video"; do
 	case $filename in
 		video ) roslaunch edge_detector_node video.launch; break;;
 		image ) roslaunch edge_detector_node image-sim-r2.launch; break;;
@@ -13,6 +13,7 @@ select filename in "video" "image" "gstreamer-lab-summer" "gstreamer-lab-roof" "
 		gstreamer-lab-roof ) roslaunch edge_detector_node gstreamer-lab-roof.launch; break;;
 		gstreamer-udp-camera-front ) roslaunch edge_detector_node gstreamer-udp-camera-front.launch; break;;
 		lab ) roslaunch edge_detector_node lab.launch; break;;
+		lab-video ) roslaunch edge_detector_node lab-video.launch; break;;
 	esac
 done
 
