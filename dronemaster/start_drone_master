@@ -5,14 +5,14 @@ echo "Drone Master"
 echo "Do you want to start resource monitoring (GPU)?"
 select yn in "Yes" "No"; do
 	case $yn in
-		Yes ) x-terminal-emulator -e '/bin/bash -c "watch nvidia-smi"'; break;;
+		Yes ) gnome-terminal -e '/bin/bash -c "watch nvidia-smi"'; break;;
 		No ) break;;
 	esac
 done
 
 #Start ROS Core
 echo "Start ROS Core"
-x-terminal-emulator -e '/bin/bash -c "roscore"'
+gnome-terminal -e '/bin/bash -c "roscore"'
 sleep 2
 
 #ROS Pre Rviz
@@ -32,9 +32,9 @@ sleep 3
 echo "Do you want to start the edge detector node?"
 select answer in "yes" "no" "single"; do
 	case $answer in
-		yes ) x-terminal-emulator -e '/bin/bash /home/ascend/scripts/dronemaster/start_edge_detector'; break;;
+		yes ) gnome-terminal -e '/bin/bash /home/ascend/scripts/dronemaster/start_edge_detector'; break;;
 		no ) break;;
-		single ) x-terminal-emulator -e '/bin/bash /home/ascend/scripts/dronemaster/edge_detector'; break;;
+		single ) gnome-terminal -e '/bin/bash /home/ascend/scripts/dronemaster/edge_detector'; break;;
 	esac
 done
 
@@ -43,7 +43,7 @@ done
 echo "Do you want to start the gstreamer-reciver node?"
 select answer in "yes" "no"; do
 	case $answer in
-		yes ) x-terminal-emulator -e '/bin/bash /home/ascend/scripts/dronemaster/gstreamer_reciver'; break;;
+		yes ) gnome-terminal -e '/bin/bash /home/ascend/scripts/dronemaster/gstreamer_reciver'; break;;
 		no ) break;;
 	esac
 done
@@ -53,7 +53,7 @@ done
 echo "Do you want to start the ground bot state estimation node?"
 select answer in "yes" "no"; do
 	case $answer in
-		yes ) x-terminal-emulator -e '/bin/bash /home/ascend/scripts/dronemaster/ground_bot_state_estimation'; break;;
+		yes ) gnome-terminal -e '/bin/bash /home/ascend/scripts/dronemaster/ground_bot_state_estimation'; break;;
 		no ) break;;
 	esac
 done
