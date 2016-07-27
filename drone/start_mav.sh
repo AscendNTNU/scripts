@@ -42,5 +42,11 @@ sleep 2
 
 roslaunch lidar_obstacle_detection lidar_drone.launch &
 
+sleep 1
+echo "Starting velocity selector"
+sleep 2
+
+roslaunch pos_vel_ref_selector selector.launch &
+
 wait
 

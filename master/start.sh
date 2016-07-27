@@ -14,22 +14,35 @@ read user3
 echo ""
 
 # Start one terminal with two tabs
-echo "Opening a terminal to hold drone nodes"
-echo "Note! You need to manually enter the command written in the title of the tabs."
-echo "[Press enter]"
+echo "I'm opening a terminal for you, with two tabs."
+echo "In the first tab:"
+echo "  $ cd /home/ascend/scripts/drone/"
+echo "  $ ./start_mav.sh"
+echo "In the second tab:"
+echo "  $ cd /home/ascend/scripts/drone/"
+echo "  $ ./start_stream.sh"
+echo "Press enter when you are ready..."
 read user4
 
 gnome-terminal --tab --title="/home/scripts/start_mav.sh" -e \
                "ssh ascend@ascend-nuc" \
                --tab --title="/home/scripts/start_stream.sh" -e \
                "ssh ascend@ascend-nuc"
+echo "Press enter to continue..."
+read user5
+clear
 
 # Start another terminal with three tabs
 echo " "
-echo "Opening a terminal with dronemaster applications..."
-echo "Note! You need to manually enter the command written in the title of the tabs."
-echo "[Press enter]"
-read user5
+echo "I'm opening another terminal for you, with three tabs."
+echo "In the first tab:"
+echo "  $ rosrun mission_debugger mission_debugger"
+echo "In the second tab:"
+echo "  $ roslaunch lidar_obstacle_detection lidar_dronemaster.launch"
+echo "In the third tab:"
+echo "  $ roslaunch ground_bot_state_estimation ground_bot_state_estimation_node.launch"
+echo "Press enter when you are ready"
+read user6
 
 export ROS_MASTER_URI=http://192.168.1.151:11311
 gnome-terminal --tab --title="rosrun mission_debugger mission_debugger" \
