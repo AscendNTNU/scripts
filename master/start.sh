@@ -1,5 +1,7 @@
 echo "This script will start all nodes on both the drone and the dronemaster."
-echo "Did you remember to copy code changes to the drone workspace? [Press enter]"
+read user0
+echo "Did you remember to copy code changes to the Intel NUC drone workspace?"
+echo "If not: Run "
 read user1
 echo "Did you remember to compile your nodes on the drone? [Press enter]"
 read user2
