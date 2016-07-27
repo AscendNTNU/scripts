@@ -21,5 +21,5 @@ rsync -a /home/ascend/dronemaster/dronemaster_workspace/src/pos_vel_ref_selector
 echo "Done"
 
 echo "Synchronizing local scripts to drone (/home/ascend/scripts/)"
-rsync -a /home/ascend/dronemaster/scripts/drone ascend@ascend-nuc:/home/ascend/scripts/
+rsync -a /home/ascend/dronemaster/scripts/drone/ ascend@ascend-nuc:/home/ascend/scripts/
 echo "Done"
