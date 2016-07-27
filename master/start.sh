@@ -1,18 +1,22 @@
-echo "This script will start all nodes on both the drone and the dronemaster."
-read user0
+clear
 echo "Did you remember to copy code changes to the Intel NUC drone workspace?"
-echo "If not: Run "
+echo "If not: Run upload_code_to_drone.sh (located in /dronemaster/scripts/master/)"
+echo "[Press enter...]"
 read user1
-echo "Did you remember to compile your nodes on the drone? [Press enter]"
+echo "Did you remember to compile your nodes on the drone?"
+echo "If not: Run catkin_make in /drone/drone_workspace after ssh'ing in"
+echo "[Press enter]"
 read user2
-echo "Did you remember to compile your nodes on the dronemaster? [Press enter]"
+echo "Did you remember to compile your nodes on the dronemaster?"
+echo "If not: Run catkin_make in /dronemaster/dronemaster_workspace"
+echo "[Press enter]"
 read user3
 echo ""
 
 # Start one terminal with two tabs
-echo "Opening a terminal to setup drone..."
+echo "Opening a terminal to hold drone nodes"
 echo "Note! You need to manually enter the command written in the title of the tabs."
-echo "Continue? [Press enter]"
+echo "[Press enter]"
 read user4
 
 gnome-terminal --tab --title="/home/scripts/start_mav.sh" -e \
@@ -24,7 +28,7 @@ gnome-terminal --tab --title="/home/scripts/start_mav.sh" -e \
 echo " "
 echo "Opening a terminal with dronemaster applications..."
 echo "Note! You need to manually enter the command written in the title of the tabs."
-echo "Continue? [Press enter]"
+echo "[Press enter]"
 read user5
 
 export ROS_MASTER_URI=http://192.168.1.151:11311
