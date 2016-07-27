@@ -1,17 +1,33 @@
-echo "Opening a terminal with drone stuff"
+clear
+
+# Start one terminal with two tabs
+echo "Opening a terminal to setup drone"
+echo "  Tab 1: mavros_node"
+echo "         line_counter_nod"
+echo "         state_estimation_node"
+echo "         position_controller"
+echo "         urg_node"
+echo "         lidar_obstacle_detection"
+echo "  Tab 2: gstreamer"
 sleep 1
 
-# Drone terminal 1:
-# Tab 1: MAVROS, state_estimation_node, line_counter_node, urg_node, position_controller
-# Tab 2: gstreamer fisheye
-# Tab 3: 2D LIDAR scanner
-gnome-terminal --tab --title="MAVROS, Filter, Line Counter, URG, Position controller" -e "ssh ascend@ascend-nuc" --tab --title="GStreamer" -e "ssh ascend@ascend-nuc" --tab --title="Obstacle detection" -e "ssh ascend@ascend-nuc"
+gnome-terminal --tab --title="MAV" -e                                                            \
+               "ssh ascend@ascend-nuc 'bash -s' < /home/ascend/dronemaster/scripts/start_mav.sh" \
+               --tab --title="GStreamer" -e                                                      \
+               "ssh ascend@ascend-nuc 'bash -s' < /home/ascend/dronemaster/scripts/start_stream.sh"
 
+# Start another terminal with three tabs
+echo " "
 echo "Opening a terminal with dronemaster stuff"
+echo "  Tab 1: mission_debugger"
+echo "  Tab 2: start_lidar_dronemaster"
+echo "  Tab 3: start_ground_bot"
 sleep 1
 
-# Dronemaster terminal 1:
-# Tab 1: mission_debugger
-# Tab 2: LIDAR detections for visualization
-# Tab 3: Groundbot detection
-gnome-terminal --tab --title="Mission debugger" -e ./start_mission_debugger.sh --tab --title="2D LIDAR" -e ./start_lidar_dronemaster.sh --tab --title="Ground bot estimation" -e ./start_ground_bot.sh
+export ROS_MASTER_URI=http://192.168.1.151:11311
+gnome-terminal --tab --title="Mission debugger" -e \
+               "/bin/bash rosrun mission_debugger mission_debugger" \
+               --tab --title="Obstacle detection" -e \
+               "/bin/bash roslaunch lidar_obstacle_detection lidar_dronemaster.launch" \
+               --tab --title="Target detection" -e \
+               "/bin/bash roslaunch ground_bot_state_estimation ground_bot_state_estimation_node.launch"
