@@ -3,7 +3,7 @@
 # Drone workspace: ascend-nuc:/home/ascend/drone/drone_workspace
 # .git files are ignored
 
-echo "Synchronizing local ROS nodes to drone (/home/ascend/drone/drone_workspace)"
+echo "Synchronizing local ROS nodes to drone (ascend@ascend-nuc:/home/ascend/drone/drone_workspace)"
 
 echo "position_controller"
 rsync -a /home/ascend/dronemaster/dronemaster_workspace/src/position_controller ascend@ascend-nuc:/home/ascend/drone/drone_workspace/src/
@@ -20,6 +20,6 @@ rsync -a /home/ascend/dronemaster/dronemaster_workspace/src/pos_vel_ref_selector
 
 echo "Done"
 
-echo "Synchronizing local scripts to drone (/home/ascend/scripts/)"
+echo "Synchronizing local scripts to drone (ascend@ascend-nuc:/home/ascend/scripts/)"
 rsync -a /home/ascend/dronemaster/scripts/drone/ ascend@ascend-nuc:/home/ascend/scripts/
 echo "Done"
