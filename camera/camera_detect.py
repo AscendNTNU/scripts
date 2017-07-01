@@ -22,7 +22,8 @@ from select import select
 
 def main():
 	CAMERA_PATH = "/dev/video*"
-	USB_PATH = "/dev/bus/usb/*"
+	USB_PATH_1 = "/dev/bus/usb/001/*"
+	USB_PATH_2 = "/dev/bus/usb/002/*"
 	filename = "/tmp/cameras.rules"
 	final_dest = "/etc/udev/rules.d/cameras.rules"
 	connected = []
@@ -33,8 +34,9 @@ def main():
 	run = raw_input('Do you want to continue?[Y/N]: ')
 	if run == "Y":
 		file = open(filename,'w')
-		if len(glob.glob(USB_PATH)) > 0: #Cameras detected before the user is asked to connect any
-			connected = glob.glob(USB_PATH)
+		if len(glob.glob(USB_PATH_1))+len(glob.glob(USB_PATH_2)) > 0: #Cameras detected before the user is asked to connect any
+			connected = glob.glob(USB_PATH_1)
+			connected.extend(glob.glob(USB_PATH_2))
 			print "Some devices are already connected. These will be ignored:"
 			for device in connected:
 				print device
@@ -45,7 +47,7 @@ def main():
 			#Poll until a change in number of connected cameras is detected, or user skips
 			time.sleep(0.1)
 			skip = False
-			while len(glob.glob(USB_PATH)) == len(connected):
+			while len(glob.glob(USB_PATH_1))+len(glob.glob(USB_PATH_2)) == len(connected):
 				rlist, _, _ = select([sys.stdin], [], [], 0.5)
 				if rlist:
 					s = sys.stdin.readline()
@@ -55,7 +57,8 @@ def main():
 						break
 			if skip == True:
 				continue
-			device_list = glob.glob(USB_PATH)
+			device_list = glob.glob(USB_PATH_1)
+			device_list.extend(glob.glob(USB_PATH_2))
 			if len(device_list) == ( len(connected) + 1 ):
 				# Get type and serial number of the camera, create symlink in rules file
 				for device in device_list:
