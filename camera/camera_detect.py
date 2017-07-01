@@ -14,7 +14,7 @@
 # For:        Ascend NTNU (ascendntnu.no)
 #
 
-# Updated for use with Leopard Imaging cameras that all report the same serial number
+# Updated for use with Leopard Imaging cameras (on Intel NUC) that all report the same serial number
 # This script assumes that the cameras stay connected to the same USB port
 
 import glob, os, time, subprocess, sys
@@ -22,7 +22,7 @@ from select import select
 
 def main():
 	CAMERA_PATH = "/dev/video*"
-	USB_PATH_1 = "/dev/bus/usb/001/*"
+	USB_PATH_1 = "/dev/bus/usb/001/*" # The * does not necessarily correspond with the port number, we need to call udevadm info to know for sure
 	USB_PATH_2 = "/dev/bus/usb/002/*"
 	filename = "/tmp/cameras.rules"
 	final_dest = "/etc/udev/rules.d/cameras.rules"
@@ -60,13 +60,14 @@ def main():
 			device_list = glob.glob(USB_PATH_1)
 			device_list.extend(glob.glob(USB_PATH_2))
 			if len(device_list) == ( len(connected) + 1 ):
-				# Get type and serial number of the camera, create symlink in rules file
+				# Get the bus and port number of the USB port where the camera is connected
 				for device in device_list:
 					if device not in connected:
 						print "New device on", device
-						bus = device.split("/")[4][2]
-						port = device.split("/")[5][2]
-						string = 'SUBSYSTEM=="usb", KERNEL=="'+bus+'-'+port+'", SYMLINK+="video'+direction.title()+'"\n'
+						p = subprocess.Popen("udevadm info --attribute-walk "+device+" | grep KERNEL | head -1", stdout=subprocess.PIPE, shell=True)
+						output, err = p.communicate()
+
+						string = 'SUBSYSTEM=="usb", '+output+', SYMLINK+="video'+direction.title()+'"\n'
 						file.write(string);
 						connected.append(device)
 						print "Device added with symlink /dev/video"+direction.title()
@@ -82,6 +83,8 @@ def main():
 		#Move the rules file to the correct location. The user may be asked for administrator credentials.
 		proc = subprocess.Popen(["sudo","mv",filename,final_dest])
 		proc.wait()
+		# Reload the udev rules. After this the cameras must be reconnected for the symlinks to appear
+		p = subprocess.Popen("sudo udevadm control --reload-rules && udevadm trigger", stdout=subprocess.PIPE, shell=True)
 		return 0
 		
 	else:
