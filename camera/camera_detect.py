@@ -14,27 +14,30 @@
 # For:        Ascend NTNU (ascendntnu.no)
 #
 
+# Updated for use with Leopard Imaging cameras that all report the same serial number
+# This script assumes that the cameras stay connected to the same USB port
+
 import glob, os, time, subprocess, sys
 from select import select
 
 def main():
 	CAMERA_PATH = "/dev/video*"
-	V4L_PATH = "/dev/v4l/by-id/*"
+	USB_PATH = "/dev/bus/usb/*"
 	filename = "/tmp/cameras.rules"
 	final_dest = "/etc/udev/rules.d/cameras.rules"
 	connected = []
-	DIRECTIONS = ["front", "left", "right", "back", "fisheye"]
+	DIRECTIONS = ["front", "left", "right", "fisheye"]
 
 	print "WARNING: This program will overwrite any existing file",final_dest
 	print "Please disconnect all cameras."
 	run = raw_input('Do you want to continue?[Y/N]: ')
 	if run == "Y":
 		file = open(filename,'w')
-		if len(glob.glob(CAMERA_PATH)) > 0: #Cameras detected before the user is asked to connect any
-			connected = glob.glob(V4L_PATH)
-			print "Some cameras are already connected. These will be ignored:"
-			for camera in connected:
-				print camera
+		if len(glob.glob(USB_PATH)) > 0: #Cameras detected before the user is asked to connect any
+			connected = glob.glob(USB_PATH)
+			print "Some devices are already connected. These will be ignored:"
+			for device in connected:
+				print device
 
 		for direction in DIRECTIONS:
 			print "\nPlease connect", direction, "camera, or press enter to skip"
@@ -42,7 +45,7 @@ def main():
 			#Poll until a change in number of connected cameras is detected, or user skips
 			time.sleep(0.1)
 			skip = False
-			while len(glob.glob(V4L_PATH)) == len(connected):
+			while len(glob.glob(USB_PATH)) == len(connected):
 				rlist, _, _ = select([sys.stdin], [], [], 0.5)
 				if rlist:
 					s = sys.stdin.readline()
@@ -52,18 +55,15 @@ def main():
 						break
 			if skip == True:
 				continue
-			device_list = glob.glob(V4L_PATH)
+			device_list = glob.glob(USB_PATH)
 			if len(device_list) == ( len(connected) + 1 ):
 				# Get type and serial number of the camera, create symlink in rules file
 				for device in device_list:
 					if device not in connected:
 						print "New device on", device
-						name = device.split("-")[2]
-						if name.find("C920") > 0:
-							serial = name.split("_")[5]
-							string = 'ATTR{name} == "HD Pro Webcam C920", ATTRS{serial}=="'+serial+'", SYMLINK+="video'+direction.title()+'"\n'
-						else:
-							string = 'ATTR{name} == "USB 2.0 Camera", SYMLINK+="video'+direction.title()+'"\n'
+						bus = device.split("/")[4][2]
+						port = device.split("/")[5][2]
+						string = 'SUBSYSTEM=="usb", KERNEL=="'+bus+'-'+port+'", SYMLINK+="video'+direction.title()+'"\n'
 						file.write(string);
 						connected.append(device)
 						print "Device added with symlink /dev/video"+direction.title()
