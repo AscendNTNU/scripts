@@ -67,7 +67,7 @@ def main():
 						p = subprocess.Popen("udevadm info --attribute-walk "+device+" | grep KERNEL | head -1", stdout=subprocess.PIPE, shell=True)
 						output, err = p.communicate()
 
-						string = 'SUBSYSTEM=="usb", '+output+', SYMLINK+="video'+direction.title()+'"\n'
+						string = 'UBSYSTEM=="video4linux", SUBSYSTEMS=="usb", '+output+', SYMLINK+="video'+direction.title()+'"\n'
 						file.write(string);
 						connected.append(device)
 						print "Device added with symlink /dev/video"+direction.title()
